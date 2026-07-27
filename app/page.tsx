@@ -1,12 +1,28 @@
-import ProjectCard from './ProjectCard';
+import { getAllUserRepos } from '@/lib/github';
 
-export default function Home() {
-  const projects = [
-    { repo: 'AlphaGravity', name: 'AlphaGravity', description: 'AI-powered financial research engine. 500K+ filings indexed, real-time market analysis, deep research workflows.', tags: ['Python', 'TypeScript'], owner: 'houssem98' },
-    { repo: 'TradingAgents', name: 'Trading Agents', description: 'Autonomous agents for market analysis and trade execution. Multi-model coordination.', tags: ['Python'], owner: 'houssem98' },
-    { repo: 'hermes-audit', name: 'Hermes Daemon', description: 'Self-hosted trading research daemon. Real-time alerts, dividend tracking, briefings.', tags: ['Docker'], owner: 'houssem98' },
-    { repo: 'trustgrid-dashboard', name: 'TrustGrid', description: 'On-chain data verification dashboard. Grid trust scoring, source validation.', tags: ['TypeScript'], owner: 'houssem98' },
-  ];
+interface Repo {
+  name: string;
+  description: string;
+  stars: number;
+  forks: number;
+  language: string;
+  url: string;
+}
+
+const LANG_COLORS: { [key: string]: string } = {
+  'Python': 'bg-blue-100 dark:bg-blue-900 text-blue-800 dark:text-blue-200',
+  'TypeScript': 'bg-purple-100 dark:bg-purple-900 text-purple-800 dark:text-purple-200',
+  'JavaScript': 'bg-yellow-100 dark:bg-yellow-900 text-yellow-800 dark:text-yellow-200',
+  'Solidity': 'bg-red-100 dark:bg-red-900 text-red-800 dark:text-red-200',
+  'Java': 'bg-orange-100 dark:bg-orange-900 text-orange-800 dark:text-orange-200',
+  'Go': 'bg-cyan-100 dark:bg-cyan-900 text-cyan-800 dark:text-cyan-200',
+  'Rust': 'bg-amber-100 dark:bg-amber-900 text-amber-800 dark:text-amber-200',
+};
+
+const getLangColor = (lang: string) => LANG_COLORS[lang] || 'bg-gray-100 dark:bg-gray-900 text-gray-800 dark:text-gray-200';
+
+export default async function Home() {
+  const repos = await getAllUserRepos('houssem98');
 
   return (
     <main className="min-h-screen bg-gradient-to-br from-gray-50 to-gray-100 dark:from-gray-950 dark:to-gray-900">
@@ -45,18 +61,56 @@ export default function Home() {
       {/* Projects Grid */}
       <section id="projects" className="pb-20 px-6">
         <div className="max-w-6xl mx-auto">
-          <h2 className="text-3xl font-bold mb-12">Featured Projects</h2>
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-            {projects.map(project => (
-              <ProjectCard
-                key={project.repo}
-                repo={project.repo}
-                name={project.name}
-                description={project.description}
-                tags={project.tags}
-                owner={project.owner}
-              />
+          <h2 className="text-3xl font-bold mb-4">All Projects ({repos.length})</h2>
+          <p className="text-gray-600 dark:text-gray-400 mb-12">Sorted by stars. Fetched live from GitHub API.</p>
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+            {repos.map((repo: Repo) => (
+              <a
+                key={repo.name}
+                href={repo.url}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="group p-4 bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-800 rounded-lg hover:border-blue-400 transition"
+              >
+                <div className="flex items-start justify-between mb-2">
+                  <h3 className="text-lg font-semibold group-hover:text-blue-600 truncate">{repo.name}</h3>
+                  {repo.stars > 0 && (
+                    <span className="text-xs text-yellow-600 dark:text-yellow-400 font-bold whitespace-nowrap ml-2">⭐ {repo.stars}</span>
+                  )}
+                </div>
+                <p className="text-gray-600 dark:text-gray-400 text-sm mb-3 line-clamp-2">
+                  {repo.description}
+                </p>
+                <div className="flex items-center justify-between">
+                  <span className={`px-2 py-1 text-xs rounded font-medium ${getLangColor(repo.language)}`}>
+                    {repo.language}
+                  </span>
+                  {repo.forks > 0 && (
+                    <span className="text-xs text-gray-500">🔀 {repo.forks}</span>
+                  )}
+                </div>
+              </a>
             ))}
+          </div>
+        </div>
+      </section>
+
+      {/* Stats */}
+      <section className="py-16 px-6 bg-white dark:bg-gray-900 border-y border-gray-200 dark:border-gray-800">
+        <div className="max-w-4xl mx-auto">
+          <div className="grid grid-cols-3 gap-6 text-center">
+            <div>
+              <div className="text-3xl font-bold text-blue-600">{repos.length}</div>
+              <p className="text-gray-600 dark:text-gray-400 text-sm mt-1">Projects</p>
+            </div>
+            <div>
+              <div className="text-3xl font-bold text-purple-600">{repos.reduce((sum, r) => sum + r.stars, 0)}</div>
+              <p className="text-gray-600 dark:text-gray-400 text-sm mt-1">Total Stars</p>
+            </div>
+            <div>
+              <div className="text-3xl font-bold text-green-600">{repos.reduce((sum, r) => sum + r.forks, 0)}</div>
+              <p className="text-gray-600 dark:text-gray-400 text-sm mt-1">Total Forks</p>
+            </div>
           </div>
         </div>
       </section>
