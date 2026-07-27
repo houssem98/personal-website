@@ -1,4 +1,13 @@
+import ProjectCard from './ProjectCard';
+
 export default function Home() {
+  const projects = [
+    { repo: 'AlphaGravity', name: 'AlphaGravity', description: 'AI-powered financial research engine. 500K+ filings indexed, real-time market analysis, deep research workflows.', tags: ['Python', 'TypeScript'], owner: 'houssem98' },
+    { repo: 'TradingAgents', name: 'Trading Agents', description: 'Autonomous agents for market analysis and trade execution. Multi-model coordination.', tags: ['Python'], owner: 'houssem98' },
+    { repo: 'hermes-audit', name: 'Hermes Daemon', description: 'Self-hosted trading research daemon. Real-time alerts, dividend tracking, briefings.', tags: ['Docker'], owner: 'houssem98' },
+    { repo: 'trustgrid-dashboard', name: 'TrustGrid', description: 'On-chain data verification dashboard. Grid trust scoring, source validation.', tags: ['TypeScript'], owner: 'houssem98' },
+  ];
+
   return (
     <main className="min-h-screen bg-gradient-to-br from-gray-50 to-gray-100 dark:from-gray-950 dark:to-gray-900">
       {/* Navigation */}
@@ -36,48 +45,18 @@ export default function Home() {
       {/* Projects Grid */}
       <section id="projects" className="pb-20 px-6">
         <div className="max-w-6xl mx-auto">
-          <h2 className="text-3xl font-bold mb-12">Recent Projects</h2>
+          <h2 className="text-3xl font-bold mb-12">Featured Projects</h2>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-            <a href="https://github.com/houssem98/AlphaGravity" className="group p-6 bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-800 rounded-lg hover:border-blue-400 transition">
-              <h3 className="text-xl font-semibold mb-2 group-hover:text-blue-600">AlphaGravity</h3>
-              <p className="text-gray-600 dark:text-gray-400 text-sm mb-4">
-                AI-powered financial research engine. 500K+ filings indexed, real-time market analysis, deep research workflows.
-              </p>
-              <div className="flex gap-2">
-                <span className="px-2 py-1 bg-blue-100 dark:bg-blue-900 text-blue-800 dark:text-blue-200 text-xs rounded">Python</span>
-                <span className="px-2 py-1 bg-purple-100 dark:bg-purple-900 text-purple-800 dark:text-purple-200 text-xs rounded">TypeScript</span>
-              </div>
-            </a>
-
-            <a href="https://github.com/houssem98" className="group p-6 bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-800 rounded-lg hover:border-blue-400 transition">
-              <h3 className="text-xl font-semibold mb-2 group-hover:text-blue-600">Trading Agents</h3>
-              <p className="text-gray-600 dark:text-gray-400 text-sm mb-4">
-                Autonomous agents for market analysis and trade execution. Multi-model coordination.
-              </p>
-              <div className="flex gap-2">
-                <span className="px-2 py-1 bg-green-100 dark:bg-green-900 text-green-800 dark:text-green-200 text-xs rounded">Python</span>
-              </div>
-            </a>
-
-            <a href="https://github.com/houssem98" className="group p-6 bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-800 rounded-lg hover:border-blue-400 transition">
-              <h3 className="text-xl font-semibold mb-2 group-hover:text-blue-600">Hermes Daemon</h3>
-              <p className="text-gray-600 dark:text-gray-400 text-sm mb-4">
-                Self-hosted trading research daemon. Real-time alerts, dividend tracking, briefings.
-              </p>
-              <div className="flex gap-2">
-                <span className="px-2 py-1 bg-orange-100 dark:bg-orange-900 text-orange-800 dark:text-orange-200 text-xs rounded">Docker</span>
-              </div>
-            </a>
-
-            <a href="https://github.com/houssem98" className="group p-6 bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-800 rounded-lg hover:border-blue-400 transition">
-              <h3 className="text-xl font-semibold mb-2 group-hover:text-blue-600">TrustGrid</h3>
-              <p className="text-gray-600 dark:text-gray-400 text-sm mb-4">
-                On-chain data verification dashboard. Grid trust scoring, source validation.
-              </p>
-              <div className="flex gap-2">
-                <span className="px-2 py-1 bg-indigo-100 dark:bg-indigo-900 text-indigo-800 dark:text-indigo-200 text-xs rounded">TypeScript</span>
-              </div>
-            </a>
+            {projects.map(project => (
+              <ProjectCard
+                key={project.repo}
+                repo={project.repo}
+                name={project.name}
+                description={project.description}
+                tags={project.tags}
+                owner={project.owner}
+              />
+            ))}
           </div>
         </div>
       </section>
