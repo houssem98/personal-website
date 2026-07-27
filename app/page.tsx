@@ -1,4 +1,5 @@
 import { getAllUserRepos } from '@/lib/github';
+import EmailSignup from './EmailSignup';
 
 interface Repo {
   name: string;
@@ -47,13 +48,17 @@ export default async function Home() {
           <p className="text-xl text-gray-600 dark:text-gray-400 mb-8 max-w-2xl mx-auto">
             Building AlphaGravity — AI-powered financial research, deep market analysis, and trading systems for institutional investors.
           </p>
-          <div className="flex gap-4 justify-center">
+          <div className="flex gap-4 justify-center mb-8">
             <a href="https://github.com/houssem98/AlphaGravity" className="px-8 py-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700 font-medium">
               View AlphaGravity →
             </a>
             <a href="mailto:houssemzitoub@gmail.com" className="px-8 py-3 border border-gray-300 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-900 font-medium">
               Get in Touch
             </a>
+          </div>
+          <div className="max-w-md mx-auto">
+            <p className="text-sm text-gray-600 dark:text-gray-400 mb-4">Get updates on new research tools and market insights</p>
+            <EmailSignup />
           </div>
         </div>
       </section>
